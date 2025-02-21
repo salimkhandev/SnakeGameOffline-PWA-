@@ -37,6 +37,12 @@
             "src": "/icons/favicon.ico",
             "sizes": "48x48",
             "type": "image/x-icon"
+        },
+        {
+            "src": "/icons/maskable.png",
+                "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
         }
     ],
     "screenshots": [
