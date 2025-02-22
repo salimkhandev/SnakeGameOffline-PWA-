@@ -152,7 +152,7 @@
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         
         function playEatingSound() {
-            // Create oscillator and gain node
+            // Create oscillator for Nokia-style beep
             const osc = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
             
@@ -160,17 +160,55 @@
             osc.connect(gainNode);
             gainNode.connect(audioContext.destination);
             
-            // Set initial frequency and gain
-            osc.frequency.setValueAtTime(600, audioContext.currentTime);
-            gainNode.gain.setValueAtTime(0.6, audioContext.currentTime);
+            // Nokia eating sound (high-pitched short beep)
+            osc.type = 'square'; // Nokia used square waves
+            osc.frequency.setValueAtTime(1760, audioContext.currentTime); // A6 note
+            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
             
-            // Create the "pop" effect
-            osc.frequency.exponentialRampToValueAtTime(1, audioContext.currentTime + 0.1);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            // Short duration with slight decay
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.08);
             
             // Start and stop
             osc.start(audioContext.currentTime);
-            osc.stop(audioContext.currentTime + 0.1);
+            osc.stop(audioContext.currentTime + 0.08);
+        }
+
+        function playGameOverSound() {
+            // Classic Nokia game over melody
+            const melody = [
+                { freq: 880, duration: 0.15 },    // A5
+                { freq: 698.46, duration: 0.15 }, // F5
+                { freq: 587.33, duration: 0.15 }, // D5
+                { freq: 523.25, duration: 0.15 }, // C5
+                { freq: 440, duration: 0.3 }      // A4 (longer final note)
+            ];
+            
+            let timeOffset = 0;
+            melody.forEach(note => {
+                const osc = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                // Connect nodes
+                osc.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Setup oscillator
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(note.freq, audioContext.currentTime + timeOffset);
+                
+                // Volume envelope
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime + timeOffset);
+                gainNode.gain.exponentialRampToValueAtTime(
+                    0.01, 
+                    audioContext.currentTime + timeOffset + note.duration
+                );
+                
+                // Start and stop
+                osc.start(audioContext.currentTime + timeOffset);
+                osc.stop(audioContext.currentTime + timeOffset + note.duration);
+                
+                timeOffset += note.duration;
+            });
         }
 
         // Initialize audio context on first user interaction
@@ -227,21 +265,17 @@
         }
 
         function startGame() {
-            if (!isGameOver && !isPaused) return;
-            
-            // Initialize snake
-            snake = [{
-                x: Math.floor(canvas.width/(2*box)) * box,
-                y: Math.floor(canvas.height/(2*box)) * box
-            }];
-            
-            // Add initial length
-            for(let i = 1; i < 5; i++) { // Change from 1 to 5 for initial length
-                snake.push({
-                    x: snake[0].x - (i * box), // Add segments behind the head
-                    y: snake[0].y
-                });
-            }
+            // Initialize snake with 2 segments
+            snake = [
+                {   // Head
+                    x: Math.floor(canvas.width/(2*box)) * box,
+                    y: Math.floor(canvas.height/(2*box)) * box
+                },
+                {   // First body segment
+                    x: Math.floor(canvas.width/(2*box)) * box - box,
+                    y: Math.floor(canvas.height/(2*box)) * box
+                }
+            ];
             
             // Reset game state
             direction = 'RIGHT';
@@ -252,12 +286,14 @@
             isPaused = false;
             pauseBtn.textContent = 'Pause';
             
-            // Generate food
+            // Generate initial food position
             generateFood();
             
-            // Start game loop
+            // Clear any existing game loop
             if (gameLoop) clearInterval(gameLoop);
-            gameSpeed = window.innerWidth < 600 ? 200 : 150;
+            
+            // Start game loop
+            gameSpeed = 150;
             gameLoop = setInterval(draw, gameSpeed);
         }
 
@@ -278,7 +314,7 @@
 
         function draw() {
             if (isPaused) return;
-
+            
             // Clear canvas
             ctx.fillStyle = '#282c34';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -615,6 +651,9 @@
         function gameOver() {
             isGameOver = true;
             clearInterval(gameLoop);
+            
+            // Play game over sound
+            playGameOverSound();
             
             // Vibration feedback
             if ('vibrate' in navigator) {
