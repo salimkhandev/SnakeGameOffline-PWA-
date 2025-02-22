@@ -148,6 +148,38 @@
         let touchStartX = 0;
         let touchStartY = 0;
 
+        // Audio setup
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playEatingSound() {
+            // Create oscillator and gain node
+            const osc = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            // Connect nodes
+            osc.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Set initial frequency and gain
+            osc.frequency.setValueAtTime(600, audioContext.currentTime);
+            gainNode.gain.setValueAtTime(0.6, audioContext.currentTime);
+            
+            // Create the "pop" effect
+            osc.frequency.exponentialRampToValueAtTime(1, audioContext.currentTime + 0.1);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            // Start and stop
+            osc.start(audioContext.currentTime);
+            osc.stop(audioContext.currentTime + 0.1);
+        }
+
+        // Initialize audio context on first user interaction
+        document.addEventListener('click', () => {
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        }, { once: true });
+
         // Initialize game
         function init() {
             resizeCanvas();
@@ -556,10 +588,7 @@
             // Check food collision
             if (head.x === food.x && head.y === food.y) {
                 // Play eating sound
-                const eatSound = document.getElementById('eatSound');
-                eatSound.currentTime = 0; // Reset sound to start
-                eatSound.play()
-                    .catch(error => console.log('Sound play failed:', error)); // Handle any playback errors
+                playEatingSound();
                 
                 score += 10;
                 scoreElement.textContent = score;
