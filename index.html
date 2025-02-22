@@ -11,76 +11,70 @@
     <style>
         body {
             margin: 0;
+            padding: 0;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: #1a1d22;
+            justify-content: center;
+            background-color: #282c34;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: white;
-            font-family: 'Segoe UI', sans-serif;
-            padding: 20px;
+            overflow: hidden; /* Prevent scrolling */
+            position: fixed; /* Fix the body in place */
+            width: 100%;
+            touch-action: none; /* Prevent pull-to-refresh on mobile */
         }
 
         .game-container {
-            position: relative;
-            margin: 20px auto;
-            touch-action: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            touch-action: none; /* Prevent touch gestures from causing scroll */
         }
 
         canvas {
-            background: #282c34;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            border: 2px solid #4cd137;
+            border-radius: 10px;
+            touch-action: none; /* Prevent canvas touch gestures from causing scroll */
         }
 
-        .score-board {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px 30px;
-            border-radius: 15px;
-            font-size: 1.2em;
-            margin: 20px 0;
+        .score-container {
             display: flex;
-            gap: 20px;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 10px;
         }
 
         .controls {
             display: flex;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 10px;
+            margin-top: 10px;
         }
 
         .btn {
-            background: #4cd137;
-            color: white;
+            padding: 10px 20px;
             border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-size: 1em;
+            border-radius: 5px;
+            background-color: #4cd137;
+            color: white;
             cursor: pointer;
-            transition: all 0.3s ease;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            touch-action: manipulation; /* Optimize touch behavior */
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(76, 209, 55, 0.3);
+            background-color: #44bd32;
         }
 
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        @media (max-width: 600px) {
-            body {
+        @media (max-height: 600px) {
+            .game-container {
                 padding: 10px;
-            }
-
-            .score-board {
-                font-size: 1em;
-                padding: 10px 20px;
-            }
-
-            .btn {
-                padding: 10px 20px;
+                gap: 10px;
             }
         }
 
