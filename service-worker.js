@@ -2,6 +2,8 @@ const CACHE_NAME = 'snake-game-v2';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
+    '/manifest.json',  // Add the manifest file
+    '/service-worker.js',  // Add the service worker file
     '/icons/android-chrome-192x192.png',
     '/icons/android-chrome-512x512.png',
     '/icons/apple-touch-icon.png',
