@@ -123,6 +123,8 @@
         <button class="btn" id="pauseBtn">Pause</button>
     </div>
 
+    <audio id="eatSound" src="data:audio/mpeg;base64,//uQxAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAAKAAAIkAAGBgYGBgYGBgYcHBwcHBwcHBw4ODg4ODg4ODhUVFRUVFRUVFRwcHBwcHBwcHCMjIyMjIyMjIyoqKioqKioqKjExMTExMTExMTc3Nzc3Nzc3Nz4+Pj4+Pj4+Pj///////////8AAAA5TEFNRTMuMTAwA84AAAAAAAAAABQgJAUHQQAB4AAABJAIE7qGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//uwxAAABLQDe7QQAAI/nG8n9BAAEpqbm5uYuLgwMDAwODg4OGhoaGhoaGhonJycnJycnJzc3Nzc3Nzc3Q0NDQ0NDQ0NWVlZWVlZWVlZmZmZmZmZmZmaGhoaGhoaGhoa2tra2tra2trbd3d3d3d3d3d3u7u7u7u7u7u7////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8=" preload="auto"></audio>
+
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -553,6 +555,12 @@
 
             // Check food collision
             if (head.x === food.x && head.y === food.y) {
+                // Play eating sound
+                const eatSound = document.getElementById('eatSound');
+                eatSound.currentTime = 0; // Reset sound to start
+                eatSound.play()
+                    .catch(error => console.log('Sound play failed:', error)); // Handle any playback errors
+                
                 score += 10;
                 scoreElement.textContent = score;
                 if (score > highScore) {
