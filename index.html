@@ -201,6 +201,14 @@
                 y: Math.floor(canvas.height/(2*box)) * box
             }];
             
+            // Add initial length
+            for(let i = 1; i < 5; i++) { // Change from 1 to 5 for initial length
+                snake.push({
+                    x: snake[0].x - (i * box), // Add segments behind the head
+                    y: snake[0].y
+                });
+            }
+            
             // Reset game state
             direction = 'RIGHT';
             nextDirection = 'RIGHT';
@@ -309,16 +317,18 @@
                                 }
                             }
 
-                            // Eyes
+                            // Eyes (both sides)
                             ctx.fillStyle = 'white';
                             ctx.beginPath();
                             ctx.arc(segment.x + headWidth - 8, segment.y + headHeight/3, eyeSize, 0, Math.PI * 2);
+                            ctx.arc(segment.x + headWidth - 8, segment.y + headHeight * 2/3, eyeSize, 0, Math.PI * 2);
                             ctx.fill();
 
-                            // Pupil
+                            // Pupils (both sides)
                             ctx.fillStyle = 'black';
                             ctx.beginPath();
                             ctx.arc(segment.x + headWidth - 7, segment.y + headHeight/3, pupilSize, 0, Math.PI * 2);
+                            ctx.arc(segment.x + headWidth - 7, segment.y + headHeight * 2/3, pupilSize, 0, Math.PI * 2);
                             ctx.fill();
 
                             // Nostril
@@ -363,16 +373,18 @@
                                 }
                             }
 
-                            // Eye
+                            // Eyes (both sides)
                             ctx.fillStyle = 'white';
                             ctx.beginPath();
                             ctx.arc(segment.x + 8, segment.y + headHeight/3, eyeSize, 0, Math.PI * 2);
+                            ctx.arc(segment.x + 8, segment.y + headHeight * 2/3, eyeSize, 0, Math.PI * 2);
                             ctx.fill();
 
-                            // Pupil
+                            // Pupils (both sides)
                             ctx.fillStyle = 'black';
                             ctx.beginPath();
                             ctx.arc(segment.x + 7, segment.y + headHeight/3, pupilSize, 0, Math.PI * 2);
+                            ctx.arc(segment.x + 7, segment.y + headHeight * 2/3, pupilSize, 0, Math.PI * 2);
                             ctx.fill();
 
                             // Nostril
