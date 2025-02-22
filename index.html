@@ -259,138 +259,230 @@
                 const centerY = segment.y + box/2;
 
                 if (index === 0) {
-                    // Head with tapered shape and eyes
-                    ctx.fillStyle = '#4cd137';
+                    // Head with more realistic features
+                    ctx.fillStyle = '#2ecc71';
                     ctx.beginPath();
 
                     // Common head parameters
-                    const headWidth = box;
+                    const headWidth = box * 1.2;  // Slightly larger head
                     const headHeight = box;
-                    const neckWidth = box * 0.7;
-                    const eyeSize = 3;
-                    const pupilSize = 1.5;
+                    const neckWidth = box * 0.8;
+                    const eyeSize = 4;
+                    const pupilSize = 2;
+                    const scaleSize = 3;
 
                     switch(direction) {
                         case 'RIGHT':
-                            // Tapered head pointing right
+                            // Head shape
+                            ctx.beginPath();
                             ctx.moveTo(segment.x + neckWidth, segment.y);
-                            ctx.lineTo(segment.x + headWidth, segment.y + headHeight/4);
+                            // Top curve
                             ctx.quadraticCurveTo(
-                                segment.x + headWidth + headHeight/4, 
-                                segment.y + headHeight/2,
+                                segment.x + headWidth - box/4, 
+                                segment.y, 
                                 segment.x + headWidth, 
-                                segment.y + headHeight * 3/4
+                                segment.y + headHeight/2
                             );
-                            ctx.lineTo(segment.x + neckWidth, segment.y + headHeight);
-                            ctx.lineTo(segment.x + neckWidth, segment.y);
-                            break;
-
-                        case 'LEFT':
-                            // Tapered head pointing left
-                            ctx.moveTo(segment.x + headWidth - neckWidth, segment.y);
-                            ctx.lineTo(segment.x, segment.y + headHeight/4);
+                            // Bottom curve
                             ctx.quadraticCurveTo(
-                                segment.x - headHeight/4, 
-                                segment.y + headHeight/2,
-                                segment.x, 
-                                segment.y + headHeight * 3/4
-                            );
-                            ctx.lineTo(segment.x + headWidth - neckWidth, segment.y + headHeight);
-                            ctx.lineTo(segment.x + headWidth - neckWidth, segment.y);
-                            break;
-
-                        case 'UP':
-                            // Tapered head pointing up
-                            ctx.moveTo(segment.x, segment.y + headHeight - neckWidth);
-                            ctx.lineTo(segment.x + headWidth/4, segment.y);
-                            ctx.quadraticCurveTo(
-                                segment.x + headWidth/2, 
-                                segment.y - headHeight/4,
-                                segment.x + headWidth * 3/4, 
-                                segment.y
-                            );
-                            ctx.lineTo(segment.x + headWidth, segment.y + headHeight - neckWidth);
-                            ctx.lineTo(segment.x, segment.y + headHeight - neckWidth);
-                            break;
-
-                        case 'DOWN':
-                            // Tapered head pointing down
-                            ctx.moveTo(segment.x, segment.y + neckWidth);
-                            ctx.lineTo(segment.x + headWidth/4, segment.y + headHeight);
-                            ctx.quadraticCurveTo(
-                                segment.x + headWidth/2, 
-                                segment.y + headHeight + headHeight/4,
-                                segment.x + headWidth * 3/4, 
+                                segment.x + headWidth - box/4, 
+                                segment.y + headHeight,
+                                segment.x + neckWidth, 
                                 segment.y + headHeight
                             );
-                            ctx.lineTo(segment.x + headWidth, segment.y + neckWidth);
-                            ctx.lineTo(segment.x, segment.y + neckWidth);
-                            break;
-                    }
-
-                    ctx.fill();
-
-                    // Draw eyes with pupils
-                    ctx.fillStyle = 'white';
-                    switch(direction) {
-                        case 'RIGHT':
-                            // Right-facing eyes
-                            ctx.beginPath();
-                            ctx.arc(segment.x + headWidth - 6, segment.y + headHeight/3, eyeSize, 0, Math.PI * 2);
-                            ctx.arc(segment.x + headWidth - 6, segment.y + headHeight * 2/3, eyeSize, 0, Math.PI * 2);
+                            ctx.closePath();
                             ctx.fill();
-                            // Pupils
+
+                            // Scales pattern on head
+                            ctx.fillStyle = '#27ae60';
+                            for(let i = 0; i < 3; i++) {
+                                for(let j = 0; j < 2; j++) {
+                                    ctx.beginPath();
+                                    ctx.arc(
+                                        segment.x + neckWidth + i * scaleSize * 2,
+                                        segment.y + headHeight/3 + j * headHeight/3,
+                                        scaleSize,
+                                        0,
+                                        Math.PI * 2
+                                    );
+                                    ctx.fill();
+                                }
+                            }
+
+                            // Eyes
+                            ctx.fillStyle = 'white';
+                            ctx.beginPath();
+                            ctx.arc(segment.x + headWidth - 8, segment.y + headHeight/3, eyeSize, 0, Math.PI * 2);
+                            ctx.fill();
+
+                            // Pupil
                             ctx.fillStyle = 'black';
                             ctx.beginPath();
-                            ctx.arc(segment.x + headWidth - 4, segment.y + headHeight/3, pupilSize, 0, Math.PI * 2);
-                            ctx.arc(segment.x + headWidth - 4, segment.y + headHeight * 2/3, pupilSize, 0, Math.PI * 2);
+                            ctx.arc(segment.x + headWidth - 7, segment.y + headHeight/3, pupilSize, 0, Math.PI * 2);
+                            ctx.fill();
+
+                            // Nostril
+                            ctx.fillStyle = '#27ae60';
+                            ctx.beginPath();
+                            ctx.arc(segment.x + headWidth - 4, segment.y + headHeight/2, 1.5, 0, Math.PI * 2);
                             ctx.fill();
                             break;
 
+                        // Similar patterns for other directions
                         case 'LEFT':
-                            // Left-facing eyes
                             ctx.beginPath();
-                            ctx.arc(segment.x + 6, segment.y + headHeight/3, eyeSize, 0, Math.PI * 2);
-                            ctx.arc(segment.x + 6, segment.y + headHeight * 2/3, eyeSize, 0, Math.PI * 2);
+                            ctx.moveTo(segment.x + headWidth - neckWidth, segment.y);
+                            ctx.quadraticCurveTo(
+                                segment.x + box/4, 
+                                segment.y,
+                                segment.x, 
+                                segment.y + headHeight/2
+                            );
+                            ctx.quadraticCurveTo(
+                                segment.x + box/4, 
+                                segment.y + headHeight,
+                                segment.x + headWidth - neckWidth, 
+                                segment.y + headHeight
+                            );
+                            ctx.closePath();
                             ctx.fill();
-                            // Pupils
+
+                            // Scales
+                            ctx.fillStyle = '#27ae60';
+                            for(let i = 0; i < 3; i++) {
+                                for(let j = 0; j < 2; j++) {
+                                    ctx.beginPath();
+                                    ctx.arc(
+                                        segment.x + headWidth - neckWidth - i * scaleSize * 2,
+                                        segment.y + headHeight/3 + j * headHeight/3,
+                                        scaleSize,
+                                        0,
+                                        Math.PI * 2
+                                    );
+                                    ctx.fill();
+                                }
+                            }
+
+                            // Eye
+                            ctx.fillStyle = 'white';
+                            ctx.beginPath();
+                            ctx.arc(segment.x + 8, segment.y + headHeight/3, eyeSize, 0, Math.PI * 2);
+                            ctx.fill();
+
+                            // Pupil
                             ctx.fillStyle = 'black';
                             ctx.beginPath();
-                            ctx.arc(segment.x + 8, segment.y + headHeight/3, pupilSize, 0, Math.PI * 2);
-                            ctx.arc(segment.x + 8, segment.y + headHeight * 2/3, pupilSize, 0, Math.PI * 2);
+                            ctx.arc(segment.x + 7, segment.y + headHeight/3, pupilSize, 0, Math.PI * 2);
+                            ctx.fill();
+
+                            // Nostril
+                            ctx.fillStyle = '#27ae60';
+                            ctx.beginPath();
+                            ctx.arc(segment.x + 4, segment.y + headHeight/2, 1.5, 0, Math.PI * 2);
                             ctx.fill();
                             break;
 
+                        // Add similar patterns for UP and DOWN directions
                         case 'UP':
-                            // Up-facing eyes
                             ctx.beginPath();
-                            ctx.arc(segment.x + headWidth/3, segment.y + 6, eyeSize, 0, Math.PI * 2);
-                            ctx.arc(segment.x + headWidth * 2/3, segment.y + 6, eyeSize, 0, Math.PI * 2);
+                            ctx.moveTo(segment.x, segment.y + headHeight - neckWidth);
+                            ctx.quadraticCurveTo(
+                                segment.x, 
+                                segment.y + box/4,
+                                segment.x + headHeight/2, 
+                                segment.y
+                            );
+                            ctx.quadraticCurveTo(
+                                segment.x + headHeight, 
+                                segment.y + box/4,
+                                segment.x + headHeight, 
+                                segment.y + headHeight - neckWidth
+                            );
+                            ctx.closePath();
                             ctx.fill();
+
+                            // Scales
+                            ctx.fillStyle = '#27ae60';
+                            for(let i = 0; i < 2; i++) {
+                                for(let j = 0; j < 3; j++) {
+                                    ctx.beginPath();
+                                    ctx.arc(
+                                        segment.x + headHeight/3 + i * headHeight/3,
+                                        segment.y + headHeight - neckWidth - j * scaleSize * 2,
+                                        scaleSize,
+                                        0,
+                                        Math.PI * 2
+                                    );
+                                    ctx.fill();
+                                }
+                            }
+
+                            // Eyes
+                            ctx.fillStyle = 'white';
+                            ctx.beginPath();
+                            ctx.arc(segment.x + headHeight/3, segment.y + 8, eyeSize, 0, Math.PI * 2);
+                            ctx.arc(segment.x + headHeight * 2/3, segment.y + 8, eyeSize, 0, Math.PI * 2);
+                            ctx.fill();
+
                             // Pupils
                             ctx.fillStyle = 'black';
                             ctx.beginPath();
-                            ctx.arc(segment.x + headWidth/3, segment.y + 8, pupilSize, 0, Math.PI * 2);
-                            ctx.arc(segment.x + headWidth * 2/3, segment.y + 8, pupilSize, 0, Math.PI * 2);
+                            ctx.arc(segment.x + headHeight/3, segment.y + 7, pupilSize, 0, Math.PI * 2);
+                            ctx.arc(segment.x + headHeight * 2/3, segment.y + 7, pupilSize, 0, Math.PI * 2);
                             ctx.fill();
                             break;
 
                         case 'DOWN':
-                            // Down-facing eyes
                             ctx.beginPath();
-                            ctx.arc(segment.x + headWidth/3, segment.y + headHeight - 6, eyeSize, 0, Math.PI * 2);
-                            ctx.arc(segment.x + headWidth * 2/3, segment.y + headHeight - 6, eyeSize, 0, Math.PI * 2);
+                            ctx.moveTo(segment.x, segment.y + neckWidth);
+                            ctx.quadraticCurveTo(
+                                segment.x, 
+                                segment.y + headHeight - box/4,
+                                segment.x + headHeight/2, 
+                                segment.y + headHeight
+                            );
+                            ctx.quadraticCurveTo(
+                                segment.x + headHeight, 
+                                segment.y + headHeight - box/4,
+                                segment.x + headHeight, 
+                                segment.y + neckWidth
+                            );
+                            ctx.closePath();
                             ctx.fill();
+
+                            // Scales
+                            ctx.fillStyle = '#27ae60';
+                            for(let i = 0; i < 2; i++) {
+                                for(let j = 0; j < 3; j++) {
+                                    ctx.beginPath();
+                                    ctx.arc(
+                                        segment.x + headHeight/3 + i * headHeight/3,
+                                        segment.y + neckWidth + j * scaleSize * 2,
+                                        scaleSize,
+                                        0,
+                                        Math.PI * 2
+                                    );
+                                    ctx.fill();
+                                }
+                            }
+
+                            // Eyes
+                            ctx.fillStyle = 'white';
+                            ctx.beginPath();
+                            ctx.arc(segment.x + headHeight/3, segment.y + headHeight - 8, eyeSize, 0, Math.PI * 2);
+                            ctx.arc(segment.x + headHeight * 2/3, segment.y + headHeight - 8, eyeSize, 0, Math.PI * 2);
+                            ctx.fill();
+
                             // Pupils
                             ctx.fillStyle = 'black';
                             ctx.beginPath();
-                            ctx.arc(segment.x + headWidth/3, segment.y + headHeight - 8, pupilSize, 0, Math.PI * 2);
-                            ctx.arc(segment.x + headWidth * 2/3, segment.y + headHeight - 8, pupilSize, 0, Math.PI * 2);
+                            ctx.arc(segment.x + headHeight/3, segment.y + headHeight - 7, pupilSize, 0, Math.PI * 2);
+                            ctx.arc(segment.x + headHeight * 2/3, segment.y + headHeight - 7, pupilSize, 0, Math.PI * 2);
                             ctx.fill();
                             break;
                     }
                 } else {
-                    // Body segments with slight gradient
+                    // Body segments with scales pattern
                     const gradient = ctx.createLinearGradient(
                         segment.x, 
                         segment.y, 
@@ -400,10 +492,31 @@
                     gradient.addColorStop(0, '#2ecc71');
                     gradient.addColorStop(1, '#27ae60');
                     
+                    // Main body segment
                     ctx.fillStyle = gradient;
                     ctx.beginPath();
                     ctx.roundRect(segment.x + 2, segment.y + 2, box - 4, box - 4, 3);
                     ctx.fill();
+
+                    // Add scale pattern
+                    ctx.fillStyle = '#27ae60';
+                    const scaleSize = 2;
+                    const scaleGap = 6;
+                    
+                    // Create diamond pattern for scales
+                    for(let i = 0; i < 3; i++) {
+                        for(let j = 0; j < 3; j++) {
+                            ctx.beginPath();
+                            ctx.arc(
+                                segment.x + scaleGap + i * scaleGap,
+                                segment.y + scaleGap + j * scaleGap,
+                                scaleSize,
+                                0,
+                                Math.PI * 2
+                            );
+                            ctx.fill();
+                        }
+                    }
                 }
             });
 
