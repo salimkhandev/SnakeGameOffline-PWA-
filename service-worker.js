@@ -1,9 +1,7 @@
-const CACHE_NAME = 'snake-game-v1';
+const CACHE_NAME = 'snake-game-v2';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
-    '/manifest.json',
-    '/service-worker.js',
     '/icons/android-chrome-192x192.png',
     '/icons/android-chrome-512x512.png',
     '/icons/apple-touch-icon.png',
