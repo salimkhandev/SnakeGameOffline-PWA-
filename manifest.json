@@ -62,7 +62,7 @@
     ],
     "permissions": ["vibrate"],
     "description": "Classic Snake Game - Eat, grow, and avoid walls!",
-    "orientation": "any",
+    "orientation": "portrait",
     "categories": ["games", "entertainment"],
     "prefer_related_applications": false,
     "shortcuts": [
