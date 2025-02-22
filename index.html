@@ -259,120 +259,68 @@
                 const centerY = segment.y + box/2;
 
                 if (index === 0) {
-                    // Head with tapered shape and eyes
+                    // Head
                     ctx.fillStyle = '#4cd137';
                     ctx.beginPath();
-
-                    // Common head parameters
-                    const headWidth = box;
-                    const headHeight = box;
-                    const neckWidth = box * 0.7;
-                    const eyeSize = 3;
-                    const pupilSize = 1.5;
-
-                    switch(direction) {
-                        case 'RIGHT':
-                            // Tapered head pointing right
-                            ctx.moveTo(segment.x + neckWidth, segment.y);
-                            ctx.lineTo(segment.x + headWidth, segment.y + headHeight/4);
-                            ctx.lineTo(segment.x + headWidth, segment.y + headHeight * 3/4);
-                            ctx.lineTo(segment.x + neckWidth, segment.y + headHeight);
-                            ctx.lineTo(segment.x + neckWidth, segment.y);
-                            break;
-
-                        case 'LEFT':
-                            // Tapered head pointing left
-                            ctx.moveTo(segment.x + headWidth - neckWidth, segment.y);
-                            ctx.lineTo(segment.x, segment.y + headHeight/4);
-                            ctx.lineTo(segment.x, segment.y + headHeight * 3/4);
-                            ctx.lineTo(segment.x + headWidth - neckWidth, segment.y + headHeight);
-                            ctx.lineTo(segment.x + headWidth - neckWidth, segment.y);
-                            break;
-
-                        case 'UP':
-                            // Tapered head pointing up
-                            ctx.moveTo(segment.x, segment.y + headHeight - neckWidth);
-                            ctx.lineTo(segment.x + headWidth/4, segment.y);
-                            ctx.lineTo(segment.x + headWidth * 3/4, segment.y);
-                            ctx.lineTo(segment.x + headWidth, segment.y + headHeight - neckWidth);
-                            ctx.lineTo(segment.x, segment.y + headHeight - neckWidth);
-                            break;
-
-                        case 'DOWN':
-                            // Tapered head pointing down
-                            ctx.moveTo(segment.x, segment.y + neckWidth);
-                            ctx.lineTo(segment.x + headWidth/4, segment.y + headHeight);
-                            ctx.lineTo(segment.x + headWidth * 3/4, segment.y + headHeight);
-                            ctx.lineTo(segment.x + headWidth, segment.y + neckWidth);
-                            ctx.lineTo(segment.x, segment.y + neckWidth);
-                            break;
+                    
+                    // Get next segment to determine direction
+                    const nextSegment = snake[1];
+                    
+                    if (direction === 'RIGHT') {
+                        // Body part
+                        ctx.fillRect(segment.x, segment.y, box - box/3, box);
+                        // Rounded part
+                        ctx.arc(segment.x + box - box/3, segment.y + box/2, box/2, -Math.PI/2, Math.PI/2);
+                    } 
+                    else if (direction === 'LEFT') {
+                        // Rounded part
+                        ctx.arc(segment.x + box/3, segment.y + box/2, box/2, Math.PI/2, -Math.PI/2);
+                        // Body part
+                        ctx.fillRect(segment.x + box/3, segment.y, box - box/3, box);
                     }
-
+                    else if (direction === 'UP') {
+                        // Rounded part
+                        ctx.arc(segment.x + box/2, segment.y + box/3, box/2, Math.PI, 0);
+                        // Body part
+                        ctx.fillRect(segment.x, segment.y + box/3, box, box - box/3);
+                    }
+                    else if (direction === 'DOWN') {
+                        // Body part
+                        ctx.fillRect(segment.x, segment.y, box, box - box/3);
+                        // Rounded part
+                        ctx.arc(segment.x + box/2, segment.y + box - box/3, box/2, 0, Math.PI);
+                    }
                     ctx.fill();
 
-                    // Draw eyes with pupils
+                    // Add eyes
                     ctx.fillStyle = 'white';
-                    switch(direction) {
-                        case 'RIGHT':
-                            // Right-facing eyes
-                            ctx.beginPath();
-                            ctx.arc(segment.x + headWidth - 6, segment.y + headHeight/3, eyeSize, 0, Math.PI * 2);
-                            ctx.arc(segment.x + headWidth - 6, segment.y + headHeight * 2/3, eyeSize, 0, Math.PI * 2);
-                            ctx.fill();
-                            // Pupils
-                            ctx.fillStyle = 'black';
-                            ctx.beginPath();
-                            ctx.arc(segment.x + headWidth - 4, segment.y + headHeight/3, pupilSize, 0, Math.PI * 2);
-                            ctx.arc(segment.x + headWidth - 4, segment.y + headHeight * 2/3, pupilSize, 0, Math.PI * 2);
-                            ctx.fill();
-                            break;
-
-                        case 'LEFT':
-                            // Left-facing eyes
-                            ctx.beginPath();
-                            ctx.arc(segment.x + 6, segment.y + headHeight/3, eyeSize, 0, Math.PI * 2);
-                            ctx.arc(segment.x + 6, segment.y + headHeight * 2/3, eyeSize, 0, Math.PI * 2);
-                            ctx.fill();
-                            // Pupils
-                            ctx.fillStyle = 'black';
-                            ctx.beginPath();
-                            ctx.arc(segment.x + 8, segment.y + headHeight/3, pupilSize, 0, Math.PI * 2);
-                            ctx.arc(segment.x + 8, segment.y + headHeight * 2/3, pupilSize, 0, Math.PI * 2);
-                            ctx.fill();
-                            break;
-
-                        case 'UP':
-                            // Up-facing eyes
-                            ctx.beginPath();
-                            ctx.arc(segment.x + headWidth/3, segment.y + 6, eyeSize, 0, Math.PI * 2);
-                            ctx.arc(segment.x + headWidth * 2/3, segment.y + 6, eyeSize, 0, Math.PI * 2);
-                            ctx.fill();
-                            // Pupils
-                            ctx.fillStyle = 'black';
-                            ctx.beginPath();
-                            ctx.arc(segment.x + headWidth/3, segment.y + 8, pupilSize, 0, Math.PI * 2);
-                            ctx.arc(segment.x + headWidth * 2/3, segment.y + 8, pupilSize, 0, Math.PI * 2);
-                            ctx.fill();
-                            break;
-
-                        case 'DOWN':
-                            // Down-facing eyes
-                            ctx.beginPath();
-                            ctx.arc(segment.x + headWidth/3, segment.y + headHeight - 6, eyeSize, 0, Math.PI * 2);
-                            ctx.arc(segment.x + headWidth * 2/3, segment.y + headHeight - 6, eyeSize, 0, Math.PI * 2);
-                            ctx.fill();
-                            // Pupils
-                            ctx.fillStyle = 'black';
-                            ctx.beginPath();
-                            ctx.arc(segment.x + headWidth/3, segment.y + headHeight - 8, pupilSize, 0, Math.PI * 2);
-                            ctx.arc(segment.x + headWidth * 2/3, segment.y + headHeight - 8, pupilSize, 0, Math.PI * 2);
-                            ctx.fill();
-                            break;
+                    if (direction === 'RIGHT') {
+                        ctx.beginPath();
+                        ctx.arc(segment.x + box - box/4, segment.y + box/3, 2, 0, Math.PI * 2);
+                        ctx.arc(segment.x + box - box/4, segment.y + box - box/3, 2, 0, Math.PI * 2);
+                        ctx.fill();
+                    } 
+                    else if (direction === 'LEFT') {
+                        ctx.beginPath();
+                        ctx.arc(segment.x + box/4, segment.y + box/3, 2, 0, Math.PI * 2);
+                        ctx.arc(segment.x + box/4, segment.y + box - box/3, 2, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    else if (direction === 'UP') {
+                        ctx.beginPath();
+                        ctx.arc(segment.x + box/3, segment.y + box/4, 2, 0, Math.PI * 2);
+                        ctx.arc(segment.x + box - box/3, segment.y + box/4, 2, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    else if (direction === 'DOWN') {
+                        ctx.beginPath();
+                        ctx.arc(segment.x + box/3, segment.y + box - box/4, 2, 0, Math.PI * 2);
+                        ctx.arc(segment.x + box - box/3, segment.y + box - box/4, 2, 0, Math.PI * 2);
+                        ctx.fill();
                     }
                 } else {
-                    // Body segments with slight gradient - removed the black spots
-                    ctx.fillStyle = '#2ecc71';  // Simple green color for body
-                    ctx.beginPath();
+                    // Body segments
+                    ctx.fillStyle = '#2ecc71';
                     ctx.fillRect(segment.x, segment.y, box, box);
                 }
             });
