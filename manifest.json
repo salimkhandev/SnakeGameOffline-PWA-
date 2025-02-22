@@ -39,7 +39,7 @@
             "type": "image/x-icon"
         },
         {
-            "src": "/icons/maskable.png",
+            "src": "favicon.ico",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any maskable"
