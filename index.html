@@ -275,12 +275,7 @@
                             // Tapered head pointing right
                             ctx.moveTo(segment.x + neckWidth, segment.y);
                             ctx.lineTo(segment.x + headWidth, segment.y + headHeight/4);
-                            ctx.quadraticCurveTo(
-                                segment.x + headWidth + headHeight/4, 
-                                segment.y + headHeight/2,
-                                segment.x + headWidth, 
-                                segment.y + headHeight * 3/4
-                            );
+                            ctx.lineTo(segment.x + headWidth, segment.y + headHeight * 3/4);
                             ctx.lineTo(segment.x + neckWidth, segment.y + headHeight);
                             ctx.lineTo(segment.x + neckWidth, segment.y);
                             break;
@@ -289,12 +284,7 @@
                             // Tapered head pointing left
                             ctx.moveTo(segment.x + headWidth - neckWidth, segment.y);
                             ctx.lineTo(segment.x, segment.y + headHeight/4);
-                            ctx.quadraticCurveTo(
-                                segment.x - headHeight/4, 
-                                segment.y + headHeight/2,
-                                segment.x, 
-                                segment.y + headHeight * 3/4
-                            );
+                            ctx.lineTo(segment.x, segment.y + headHeight * 3/4);
                             ctx.lineTo(segment.x + headWidth - neckWidth, segment.y + headHeight);
                             ctx.lineTo(segment.x + headWidth - neckWidth, segment.y);
                             break;
@@ -303,12 +293,7 @@
                             // Tapered head pointing up
                             ctx.moveTo(segment.x, segment.y + headHeight - neckWidth);
                             ctx.lineTo(segment.x + headWidth/4, segment.y);
-                            ctx.quadraticCurveTo(
-                                segment.x + headWidth/2, 
-                                segment.y - headHeight/4,
-                                segment.x + headWidth * 3/4, 
-                                segment.y
-                            );
+                            ctx.lineTo(segment.x + headWidth * 3/4, segment.y);
                             ctx.lineTo(segment.x + headWidth, segment.y + headHeight - neckWidth);
                             ctx.lineTo(segment.x, segment.y + headHeight - neckWidth);
                             break;
@@ -317,12 +302,7 @@
                             // Tapered head pointing down
                             ctx.moveTo(segment.x, segment.y + neckWidth);
                             ctx.lineTo(segment.x + headWidth/4, segment.y + headHeight);
-                            ctx.quadraticCurveTo(
-                                segment.x + headWidth/2, 
-                                segment.y + headHeight + headHeight/4,
-                                segment.x + headWidth * 3/4, 
-                                segment.y + headHeight
-                            );
+                            ctx.lineTo(segment.x + headWidth * 3/4, segment.y + headHeight);
                             ctx.lineTo(segment.x + headWidth, segment.y + neckWidth);
                             ctx.lineTo(segment.x, segment.y + neckWidth);
                             break;
