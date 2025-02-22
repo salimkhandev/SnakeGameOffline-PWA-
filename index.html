@@ -370,20 +370,10 @@
                             break;
                     }
                 } else {
-                    // Body segments with slight gradient
-                    const gradient = ctx.createLinearGradient(
-                        segment.x, 
-                        segment.y, 
-                        segment.x + box, 
-                        segment.y + box
-                    );
-                    gradient.addColorStop(0, '#2ecc71');
-                    gradient.addColorStop(1, '#27ae60');
-                    
-                    ctx.fillStyle = gradient;
+                    // Body segments with slight gradient - removed the black spots
+                    ctx.fillStyle = '#2ecc71';  // Simple green color for body
                     ctx.beginPath();
-                    ctx.roundRect(segment.x + 2, segment.y + 2, box - 4, box - 4, 3);
-                    ctx.fill();
+                    ctx.fillRect(segment.x, segment.y, box, box);
                 }
             });
 
