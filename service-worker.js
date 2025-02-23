@@ -24,12 +24,17 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+    // console.log('im fetching...', event.request,'this is the event');
     event.respondWith(
+    
+        // does the bellow line only check ture and false ie boolean?
+        
         caches.match(event.request)
             .then((response) => {
-                // Return cached response if found
+          
                 if (response) {
                     return response;
+                    
                 }
 
                 // Clone the request because it can only be used once
@@ -38,12 +43,13 @@ self.addEventListener('fetch', (event) => {
                 return fetch(fetchRequest)
                     .then((response) => {
                         // Check if response is valid
-                        if (!response || response.status !== 200 || response.type !== 'basic') {
-                            return response;
-                        }
+                        if (response) {
 
+                            return response;  // Browser will consume this response
+                        }
                         // Clone the response because it can only be used once
                         const responseToCache = response.clone();
+                        console.log('im ✅  caching the response', responseToCache,'this is the response to cache');
 
                         caches.open(CACHE_NAME)
                             .then((cache) => {
@@ -60,6 +66,10 @@ self.addEventListener('fetch', (event) => {
     );
 });
 
+
+
+
+
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((cacheNames) => {
@@ -71,3 +81,6 @@ self.addEventListener('activate', (event) => {
         })
     );
 });
+
+
+
