@@ -6,6 +6,7 @@
     "background_color": "#282c34",
     "theme_color": "#282c34",
     "icons": [
+        
         {
             "src": "favicon.png",
             "sizes": "192x192",
